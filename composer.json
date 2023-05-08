@@ -1,0 +1,17 @@
+{
+    "name": "vologdin/vk_test",
+    "description": "Test task for internship VK",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Vologdin Semen",
+            "email": "vologdin.dev@gmail.com"
+        }
+    ],
+    "require": {}
+}
