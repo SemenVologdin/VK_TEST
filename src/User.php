@@ -45,6 +45,8 @@ class User
      */
     protected Page $page;
 
+    protected array $stack = [];
+
     /**
      * @param string $strName
      */
@@ -56,6 +58,7 @@ class User
         $this->startLink = $this->currentLink = $this->page->getStartLink();
         $this->endLink = $this->page->getEndLink();
         $this->minAttempts = $this->page->getMinSteps();
+        $this->stack = $this->page->getStack();
     }
 
     /**
@@ -66,6 +69,9 @@ class User
         $arLinks = Page::getLinks($this->currentLink);
         print_r("0 {$this->startLink}\n");
         foreach ($arLinks as $key => $strLink){
+            if( in_array($strLink, $this->stack) ){
+                $strLink .= "*";
+            }
             print_r($key + 1 . " " . $strLink . "\n");
         }
     }
@@ -97,7 +103,7 @@ class User
      */
     public function isValidNumber($intLinkNumber ): bool
     {
-        if( empty( $intLinkNumber ) || !is_numeric($intLinkNumber) ){
+        if( !is_numeric($intLinkNumber) ){
             return false;
         }
 

@@ -20,6 +20,8 @@ class Page
      */
     protected string $endLink;
 
+    protected array $stack = [];
+
     /**
      *
      */
@@ -32,12 +34,13 @@ class Page
      */
     public static function getInstance(): self
     {
-        [$strStartLink, $strEndLink, $intSteps] = static::generateLinks();
+        [$strStartLink, $strEndLink, $intSteps, $arStack] = static::generateLinks();
 
         return (new self())
             ->setStartLink($strStartLink)
             ->setEndLink($strEndLink)
             ->setMinSteps($intSteps)
+            ->setStack($arStack)
             ;
     }
 
@@ -118,27 +121,29 @@ class Page
      */
     private static function generateLinks(): array
     {
-        $strStartLink = static::getRandomLinkBySteps();
+        [$strStartLink, $_] = static::getRandomLinkBySteps();
         $intSteps = rand(1, 3);
-        $strEndLink = static::getRandomLinkBySteps($strStartLink, $intSteps);
-        return [$strStartLink, $strEndLink, $intSteps];
+        [$strEndLink, $arStack] = static::getRandomLinkBySteps($strStartLink, $intSteps);
+        return [$strStartLink, $strEndLink, $intSteps, $arStack];
     }
 
     /**
      * @param string $strStartLink
      * @param ?int $intSteps
-     * @return string
+     * @return array
      */
-    private static function getRandomLinkBySteps(string $strStartLink = "https://en.wikipedia.org/wiki/Main_Page", ?int $intSteps = null ):string
+    private static function getRandomLinkBySteps(string $strStartLink = "https://en.wikipedia.org/wiki/Main_Page", ?int $intSteps = null ):array
     {
         $intSteps = (int)getenv('APP_DEEP_LEVEL') ?: 3;
+        $arStack = [];
 
         $strLink = $strStartLink;
         for ($i = 0; $i < $intSteps ; $i++){
             $arLinks = static::getLinks($strLink);
             $strLink = $arLinks[rand(0, count($arLinks)-1)];
+            $arStack[] = $strLink;
         }
-        return $strLink;
+        return [$strLink, $arStack];
     }
 
     /**
@@ -192,6 +197,24 @@ class Page
     public function setEndLink(string $endLink): Page
     {
         $this->endLink = $endLink;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getStack(): array
+    {
+        return $this->stack;
+    }
+
+    /**
+     * @param array $stack
+     * @return Page
+     */
+    public function setStack(array $stack): Page
+    {
+        $this->stack = $stack;
         return $this;
     }
 }

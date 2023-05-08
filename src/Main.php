@@ -32,6 +32,7 @@ class Main
         while( !$this->isGameOver() ){
             $obUsers = $this->getActiveUsers();
             while( $obUsers->valid() ){
+                /** @var User $obUser */
                 $obUser = $obUsers->current();
                 $obUser->showFinishLink();
                 $obUser->showLinks();
@@ -40,7 +41,7 @@ class Main
                 while( !$obUser->isValidNumber($intNumber) ){
                     $intNumber = readline($obUser->getname() . ", Ваш выбор: ");
                     if( !$obUser->isValidNumber($intNumber) ){
-                        print_r("Некорректное число!\nПопробуйте еще раз!");
+                        print_r("Некорректное число!\nПопробуйте еще раз!\n");
                     }
                 }
                 $obUser->chooseLink($intNumber);
@@ -48,7 +49,14 @@ class Main
             }
         }
 
-        print_r("Игра закончена, поздравляю!");
+        print_r("Пользователь | Число шагов | Минимальное число шагов\n");
+        /** @var User $obUser */
+        foreach ($this->users as $obUser){
+            $strMessage = "{$obUser->getName()} | {$obUser->getAttempts()} | {$obUser->getMinAttempts()}\n";
+            print_r($strMessage);
+        }
+
+        print_r("\nИгра закончена, поздравляю!");
     }
 
     /**
