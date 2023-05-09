@@ -83,12 +83,11 @@ class Main
         $arNames = [];
         for ($i = 0; $i < $intCountUsers; $i++) {
             $strUserName = readline("Введите имя пользователя: ");
-            if( mb_strlen($strUserName) === 0 ){
+            if( strlen($strUserName) === 0 ){
                 $i--;
                 print_r("Имя пользователя не может быть пустым!");
                 continue;
             }
-//            $arNames[] = mb_strtoupper(mb_substr($strName, 0, 1)) . mb_substr($strName, 1);
             $arNames[] = trim($strUserName);
         }
         // endregion
