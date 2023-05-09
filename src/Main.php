@@ -88,8 +88,8 @@ class Main
                 print_r("Имя пользователя не может быть пустым!");
                 continue;
             }
-            $strName = trim($strUserName);
-            $arNames[] = mb_strtoupper(mb_substr($strName, 0, 1)) . mb_substr($strName, 1);
+//            $arNames[] = mb_strtoupper(mb_substr($strName, 0, 1)) . mb_substr($strName, 1);
+            $arNames[] = trim($strUserName);
         }
         // endregion
 
